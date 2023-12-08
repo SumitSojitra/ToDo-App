@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "230538004567",
+    "project_id": "voting-app-b9d0f",
+    "storage_bucket": "voting-app-b9d0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230538004567:android:621973a61b581b84433b12",
+        "android_client_info": {
+          "package_name": "com.example.my_todo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "230538004567-c200rgblkva51rfooh1h21gs81dc8sor.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI7PXod9xH3338MMTbVuGLU5ijtNnopSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "230538004567-c200rgblkva51rfooh1h21gs81dc8sor.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "230538004567-gbo6b1kc7tmdfmrk6ivonf5ond2uigom.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.votingApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230538004567:android:1a56de9262874e3f433b12",
+        "android_client_info": {
+          "package_name": "com.example.voting_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "230538004567-877q5d6ufqkgueoavkn2ulu9ebqftot4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.voting_app",
+            "certificate_hash": "250f5dc25f8e335a76e63e3d11a17947df94f681"
+          }
+        },
+        {
+          "client_id": "230538004567-c200rgblkva51rfooh1h21gs81dc8sor.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI7PXod9xH3338MMTbVuGLU5ijtNnopSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "230538004567-c200rgblkva51rfooh1h21gs81dc8sor.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "230538004567-gbo6b1kc7tmdfmrk6ivonf5ond2uigom.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.votingApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
