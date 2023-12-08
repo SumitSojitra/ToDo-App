@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +8,15 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_todo/modules/app/Helper/FireStoreHelper/fireStoreHelper.dart';
+import 'package:my_todo/modules/app/Helper/SqliteHelper/SqliteHelper.dart';
 import 'package:my_todo/modules/app/utils/colors/colors.dart';
+import 'package:my_todo/modules/app/views/HomeScreen/Controller/controller.dart';
+import 'package:my_todo/modules/app/views/HomeScreen/model/model.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  HomeController data = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +55,14 @@ class HomeScreen extends StatelessWidget {
                             log(taskCtrl.text);
                             log("${newDate}");
                             log("${newTime}");
+                            data.addData(
+                              model: TaskModel.fromMap(data: {
+                                "task": taskCtrl.text,
+                                "date": "${newDate}".split(" ")[0],
+                                "time":
+                                    "${newTime}".split("(")[1].split(")")[0],
+                              }),
+                            );
 
                             taskCtrl.clear();
                             newTime = null;
@@ -128,85 +142,181 @@ class HomeScreen extends StatelessWidget {
         icon: Icon(Icons.add),
       ),
       body: StreamBuilder(
-        stream: FireStoreHelper.fireStoreHelper.fetchTasks(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text("${snapshot.error}"),
-            );
-          } else if (snapshot.hasData) {
-            List<QueryDocumentSnapshot<Map<String, dynamic>>>? allData =
-                snapshot.data?.docs;
+        stream: Connectivity().onConnectivityChanged,
+        builder: (context, snapshot) => (snapshot.data ==
+                    ConnectivityResult.wifi ||
+                snapshot.data == ConnectivityResult.mobile)
+            ? StreamBuilder(
+                stream: FireStoreHelper.fireStoreHelper.fetchTasks(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("${snapshot.error}"),
+                    );
+                  } else if (snapshot.hasData) {
+                    List<QueryDocumentSnapshot<Map<String, dynamic>>>? allData =
+                        snapshot.data?.docs;
 
-            return (allData!.isEmpty)
-                ? Center(
-                    child: Text("No Data"),
-                  )
-                : GridView.builder(
-                    padding: EdgeInsets.all(14),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 8,
-                        mainAxisExtent: 110,
-                        mainAxisSpacing: 8),
-                    shrinkWrap: true,
-                    itemCount: allData.length,
-                    physics: const ClampingScrollPhysics(),
-                    itemBuilder: (context, i) => Container(
-                      decoration: BoxDecoration(
-                          color: AppColor.kWhite,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        children: [
-                          Text(
-                            "${allData[i]['task']}",
-                            style: GoogleFonts.roboto(
-                                fontWeight: FontWeight.w600, fontSize: 18),
-                          ),
-                          Divider(),
-                          Row(
-                            children: [
-                              Text(
-                                "DATE :",
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Text(
-                                " ${allData[i]['date']}",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Gap(10),
-                          Row(
-                            children: [
-                              Text(
-                                "TIME :",
-                                style: GoogleFonts.roboto(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Text(
-                                " ${allData[i]['time']}",
-                                style: GoogleFonts.roboto(fontSize: 16),
-                              ),
-                            ],
+                    return (allData!.isEmpty)
+                        ? Center(
+                            child: Text("No Data"),
                           )
-                        ],
-                      ),
-                    ),
-                  );
-          }
+                        : GridView.builder(
+                            padding: EdgeInsets.all(14),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 8,
+                                    mainAxisExtent: 110,
+                                    mainAxisSpacing: 8),
+                            shrinkWrap: true,
+                            itemCount: allData.length,
+                            physics: const ClampingScrollPhysics(),
+                            itemBuilder: (context, i) => Container(
+                              decoration: BoxDecoration(
+                                  color: AppColor.kWhite,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "${allData[i]['task']}",
+                                    style: GoogleFonts.roboto(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18),
+                                  ),
+                                  Divider(),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "DATE :",
+                                        style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text(
+                                        " ${allData[i]['date']}",
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Gap(10),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "TIME :",
+                                        style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text(
+                                        " ${allData[i]['time']}",
+                                        style: GoogleFonts.roboto(fontSize: 16),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                  }
 
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              )
+            : FutureBuilder(
+                future: SqliteHelper.sqliteHelper.fetchTasks(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("${snapshot.error}"),
+                    );
+                  } else if (snapshot.hasData) {
+                    List<TaskModel>? allData = snapshot.data;
+                    return (allData!.isEmpty)
+                        ? Center(
+                            child: Text("No Data"),
+                          )
+                        : GridView.builder(
+                            padding: EdgeInsets.all(14),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 8,
+                                    mainAxisExtent: 110,
+                                    mainAxisSpacing: 8),
+                            shrinkWrap: true,
+                            itemCount: allData.length,
+                            physics: const ClampingScrollPhysics(),
+                            itemBuilder: (context, i) => GestureDetector(
+                              onLongPress: () {
+                                SqliteHelper.sqliteHelper
+                                    .deleteTask(task: allData[i].task);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: AppColor.kWhite,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "${allData[i].task}",
+                                      style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18),
+                                    ),
+                                    Divider(),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "DATE :",
+                                          style: GoogleFonts.roboto(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                          " ${allData[i].date}",
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Gap(10),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "TIME :",
+                                          style: GoogleFonts.roboto(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                          " ${allData[i].time}",
+                                          style:
+                                              GoogleFonts.roboto(fontSize: 16),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                  }
+
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
       ),
     );
   }

@@ -25,7 +25,7 @@ void main() async {
         ),
         GetPage(
           name: "/home",
-          page: () => const HomeScreen(),
+          page: () => HomeScreen(),
         ),
       ],
     ),
