@@ -43,6 +43,8 @@ dependencies:
   gap:
   path:
   connectivity_plus:
+  animate_do:
+  dots_indicator:
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_todo/modules/app/views/ItroScreen/ItroScreen.dart';
 
 import 'firebase_options.dart';
 import 'modules/app/views/HomeScreen/Screen/homescreen.dart';
@@ -23,6 +24,7 @@ void main() async {
           name: "/",
           page: () => const SplashScreen(),
         ),
+        GetPage(name: '/intro', page: () => IntroScreen()),
         GetPage(
           name: "/home",
           page: () => HomeScreen(),

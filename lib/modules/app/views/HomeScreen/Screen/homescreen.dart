@@ -103,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                                   newDate = await showDatePicker(
                                     context: context,
                                     firstDate: DateTime(2023, 1),
-                                    lastDate: DateTime(2024, 7),
+                                    lastDate: DateTime(2030, 12),
                                     helpText: 'Select a date',
                                   );
                                 },
